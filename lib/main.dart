@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:round_six/contants.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:provider/provider.dart';
+import 'package:round_six/controllers/game_controller.dart';
 import 'package:round_six/pages/home_page.dart';
-import 'package:round_six/pages/nivel_page.dart';
+import 'package:round_six/repository/records_repository.dart';
 import 'package:round_six/theme.dart';
-import 'package:round_six/widgets/logo.widget.dart';
-import 'package:round_six/widgets/record.widget.dart';
-import 'package:round_six/widgets/start_button.widget.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  await Hive.initFlutter();
+
+  runApp(MultiProvider(
+    providers: [
+      Provider<RecordsRepository>(create: (_) => RecordsRepository()),
+      ProxyProvider<RecordsRepository, GameController>(
+        update: (_, repo, __) => GameController(recordsRepository: repo),
+      ),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

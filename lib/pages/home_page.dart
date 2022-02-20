@@ -25,7 +25,9 @@ class HomePage extends StatelessWidget {
               action: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: ((context) => const NivelPage(modo: Modo.normal)),
+                  builder: ((context) => const NivelPage(
+                        modo: Modo.normal,
+                      )),
                 ),
               ),
             ),
@@ -35,7 +37,9 @@ class HomePage extends StatelessWidget {
               action: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: ((context) => const NivelPage(modo: Modo.round6)),
+                  builder: ((context) => const NivelPage(
+                        modo: Modo.round6,
+                      )),
                 ),
               ),
             ),

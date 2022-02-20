@@ -1,28 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:round_six/contants.dart';
+import 'package:round_six/controllers/game_controller.dart';
+import 'package:round_six/models/game_play.dart';
 import 'package:round_six/pages/game_page.dart';
 import 'package:round_six/theme.dart';
 
 class CardNivel extends StatelessWidget {
-  final Modo modo;
-  final int nivel;
+  GamePlay gamePlay;
 
-  const CardNivel({
+  CardNivel({
     Key? key,
-    required this.modo,
-    required this.nivel,
+    required this.gamePlay,
   }) : super(key: key);
+
+  startGame(BuildContext context) {
+    context.read<GameController>().startGame(gamePlay: gamePlay);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            fullscreenDialog: true,
+            builder: (context) => GamePage(gamePlay: gamePlay)));
+  }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          fullscreenDialog: true,
-          builder: (context) => GamePage(modo: modo, nivel: nivel),
-        ),
-      ),
+      onTap: (() => startGame(context)),
       borderRadius: const BorderRadius.all(
         Radius.circular(10.0),
       ),
@@ -32,18 +36,19 @@ class CardNivel extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
           border: Border.all(
-            color: modo == Modo.normal ? Colors.white : Round6Theme.color,
+            color:
+                gamePlay.modo == Modo.normal ? Colors.white : Round6Theme.color,
           ),
           borderRadius: const BorderRadius.all(
             Radius.circular(10),
           ),
-          color: modo == Modo.normal
+          color: gamePlay.modo == Modo.normal
               ? Colors.transparent
               : Round6Theme.color.withOpacity(.6),
         ),
         child: Center(
           child: Text(
-            nivel.toString(),
+            gamePlay.nivel.toString(),
             style: const TextStyle(
               fontSize: 30,
             ),
